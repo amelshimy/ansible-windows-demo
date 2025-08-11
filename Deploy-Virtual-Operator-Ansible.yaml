@@ -1,0 +1,110 @@
+---
+- name: Create OpenShift Virtualization Namespace
+  hosts: localhost
+  tasks:
+    - name: Create openshift-cnv namespace
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: openshift-cnv
+---
+- name: Create OperatorGroup for OpenShift Virtualization
+  hosts: localhost
+  tasks:
+    - name: Apply OperatorGroup
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: operators.coreos.com/v1
+          kind: OperatorGroup
+          metadata:
+            name: kubevirt-hyperconverged-group
+            namespace: openshift-cnv
+          spec:
+            targetNamespaces:
+              - openshift-cnv
+---
+- name: Create Subscription for OpenShift Virtualization
+  hosts: localhost
+  tasks:
+    - name: Apply Subscription
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: operators.coreos.com/v1
+          kind: Subscription
+          metadata:
+            name: hco-operatorhub
+            namespace: openshift-cnv
+          spec:
+            source: redhat-operators
+            sourceNamespace: openshift-marketplace
+            name: kubevirt-hyperconverged
+            startingCSV: kubevirt-hyperconverged-operator.v4.18.8
+            channel: "stable" 
+---
+- name: Wait for OpenShift Virtualization Operator to be available
+  hosts: localhost
+  tasks:
+    - name: Wait for CSV to be installed
+      kubernetes.core.k8s_info:
+        kind: ClusterServiceVersion
+        namespace: openshift-cnv
+      register: csv_info
+      until: csv_info.resources | selectattr('status.phase', 'equalto', 'Succeeded') | list | length > 0
+      retries: 30
+      delay: 10
+---
+- name: Deploy KubeVirt Custom Resource
+  hosts: localhost
+  tasks:
+    - name: Apply KubeVirt CR
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: hco.kubevirt.io/v1beta1
+          kind: HyperConverged
+          metadata:
+            name: kubevirt-hyperconverged
+            namespace: openshift-cnv
+            finalizers:
+              - kubevirt.io/hyperconverged
+            labels:
+              app: kubevirt-hyperconverged        
+          spec:
+            virtualMachineOptions:
+              disableFreePageReporting: false
+              disableSerialConsoleLog: true
+            higherWorkloadDensity:
+              memoryOvercommitPercentage: 100
+            liveMigrationConfig:
+              allowAutoConverge: false
+              allowPostCopy: false
+              completionTimeoutPerGiB: 150
+              parallelMigrationsPerCluster: 5
+              parallelOutboundMigrationsPerNode: 2
+              progressTimeout: 150
+            evictionStrategy: LiveMigrate
+            
+
+
+
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+              
