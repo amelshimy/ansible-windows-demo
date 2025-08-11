@@ -43,7 +43,7 @@
             source: redhat-operators
             sourceNamespace: openshift-marketplace
             name: kubevirt-hyperconverged
-            startingCSV: kubevirt-hyperconverged-operatorv4.18.0
+            startingCSV: kubevirt-hyperconverged-operator.v4.18.0
             channel: "stable" 
 
 - name: Wait for OpenShift Virtualization Operator to be available
