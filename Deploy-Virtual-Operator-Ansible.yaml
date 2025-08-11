@@ -43,7 +43,7 @@
             source: redhat-operators
             sourceNamespace: openshift-marketplace
             name: kubevirt-hyperconverged
-            startingCSV: kubevirt-hyperconverged-operator.v4.18.8
+            startingCSV: kubevirt-hyperconverged-operator
             channel: "stable" 
 
 - name: Wait for OpenShift Virtualization Operator to be available
@@ -54,7 +54,7 @@
         kind: ClusterServiceVersion
         namespace: openshift-cnv
         field_selectors:
-          - status.phase=Succeeded
+          - status.phase="Succeeded"
         wait: true  
       #register: csv_info
       #until: csv_info.resources | selectattr('status.phase', 'equalto', 'Succeeded') | list | length > 0
