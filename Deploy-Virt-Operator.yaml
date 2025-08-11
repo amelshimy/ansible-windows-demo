@@ -1,0 +1,8 @@
+---
+- name: Create Openshift Virtualization Operator 
+  hosts: localhost
+  tasks: 
+    - name: Deploy Virtualization operator through YAML file
+      kubernetes.core.k8s:
+        state: present
+        src: https://github.com/amelshimy/ansible-windows-demo/blob/main/Openshift-Virt-Operator.yaml
