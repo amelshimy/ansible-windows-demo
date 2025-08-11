@@ -21,8 +21,7 @@
       ansible.windows.win_file:
         path: "{{ item.path }}"
         state: directory
-      loop: 
-        - "{{ iis_sites }}"
+      loop: "{{ iis_sites }}"
 
     - name: Create IIS site
       community.windows.win_iis_website:
@@ -30,8 +29,7 @@
         state: started
         port: "{{ item.port }}"
         physical_path: "{{ item.path }}"
-      loop:
-        - "{{ iis_sites }}"
+      loop: "{{ iis_sites }}"
       notify: restart iis service
 
     - name: Open port for site on the firewall
