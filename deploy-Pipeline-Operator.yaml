@@ -1,0 +1,8 @@
+---
+- name: Create Openshift Pipeline Operator 
+  hosts: localhost
+  tasks: 
+    - name: Deploy Pipeline operator through YAML file
+      kubernetes.core.k8s:
+        state: present
+        src: https://raw.githubusercontent.com/amelshimy/ansible-windows-demo/refs/heads/main/Openshift-Pipel-Operator.yaml
