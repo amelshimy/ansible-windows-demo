@@ -26,7 +26,7 @@ spec:
   startingCSV: kubevirt-hyperconverged-operator.v4.18.8
   channel: "stable" 
   ---
-  apiVersion: hco.kubevirt.io/v1beta1
+apiVersion: hco.kubevirt.io/v1beta1
 kind: HyperConverged
 metadata:
   resourceVersion: '505753'
