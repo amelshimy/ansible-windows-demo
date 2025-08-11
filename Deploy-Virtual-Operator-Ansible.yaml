@@ -53,10 +53,13 @@
       kubernetes.core.k8s_info:
         kind: ClusterServiceVersion
         namespace: openshift-cnv
-      register: csv_info
-      until: csv_info.resources | selectattr('status.phase', 'equalto', 'Succeeded') | list | length > 0
-      retries: 30
-      delay: 10
+        field_selectors:
+          - status.phase=Succeeded
+        wait: true  
+      #register: csv_info
+      #until: csv_info.resources | selectattr('status.phase', 'equalto', 'Succeeded') | list | length > 0
+      #retries: 30
+      #delay: 10
 
 - name: Deploy KubeVirt Custom Resource
   hosts: localhost
