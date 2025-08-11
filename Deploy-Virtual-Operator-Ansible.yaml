@@ -10,7 +10,7 @@
           kind: Namespace
           metadata:
             name: openshift-cnv
----
+
 - name: Create OperatorGroup for OpenShift Virtualization
   hosts: localhost
   tasks:
@@ -26,7 +26,7 @@
           spec:
             targetNamespaces:
               - openshift-cnv
----
+
 - name: Create Subscription for OpenShift Virtualization
   hosts: localhost
   tasks:
@@ -45,7 +45,7 @@
             name: kubevirt-hyperconverged
             startingCSV: kubevirt-hyperconverged-operator.v4.18.8
             channel: "stable" 
----
+
 - name: Wait for OpenShift Virtualization Operator to be available
   hosts: localhost
   tasks:
@@ -57,7 +57,7 @@
       until: csv_info.resources | selectattr('status.phase', 'equalto', 'Succeeded') | list | length > 0
       retries: 30
       delay: 10
----
+
 - name: Deploy KubeVirt Custom Resource
   hosts: localhost
   tasks:
