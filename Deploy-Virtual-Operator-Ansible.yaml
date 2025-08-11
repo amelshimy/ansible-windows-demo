@@ -46,16 +46,16 @@
             startingCSV: kubevirt-hyperconverged-operator.v4.18.0
             channel: "stable" 
 
-- name: Wait for OpenShift Virtualization Operator to be available
-  hosts: localhost
-  tasks:
-    - name: Wait for CSV to be installed
-      kubernetes.core.k8s_info:
-        kind: ClusterServiceVersion
-        namespace: openshift-cnv
-        field_selectors:
-          - status.phase="Succeeded"
-        wait: true  
+#- name: Wait for OpenShift Virtualization Operator to be available
+#  hosts: localhost
+#  tasks:
+    #- name: Wait for CSV to be installed
+    #  kubernetes.core.k8s_info:
+        #kind: ClusterServiceVersion
+        #namespace: openshift-cnv
+        #field_selectors:
+        #  - status.phase="Succeeded"
+        #wait: true  
       #register: csv_info
       #until: csv_info.resources | selectattr('status.phase', 'equalto', 'Succeeded') | list | length > 0
       #retries: 30
