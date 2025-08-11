@@ -5,4 +5,4 @@
     - name: Deploy Virtualization operator through YAML file
       kubernetes.core.k8s:
         state: present
-        src: https://github.com/amelshimy/ansible-windows-demo/blob/main/Openshift-Virt-Operator.yaml
+        src: https://raw.githubusercontent.com/amelshimy/ansible-windows-demo/refs/heads/main/Openshift-Virt-Operator.yaml
