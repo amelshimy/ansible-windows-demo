@@ -8,19 +8,15 @@
         kind: VirtualMachine
         namespace: "{{ vm_namespace }}"
       register: VM_machines
-      
-    - name: List all Virtual Machines 
-      ansible.builtin.debug:
-        var: VM_machines.resources
         
     - name: change virtual machine running to {{ state }}
       kubernetes.core.k8s:
-        state: patched
-        api_version: kubevirt.io/v1
-        kind: VirtualMachine
-        name: "{{ vm_name }}"
-        namespace: "{{ vm_namespace }}"
-        merge_type: strategic-merge
-        definition:  
+        state: present
+        resource_definition:
+          apiVersion: kubevirt.io/v1
+          kind: VirtualMachine
+          metadata:
+            name: "{{ vm_name }}"
+            namespace: "{{ vm_namespace }}"
           spec:
             running: "{{ vm_state }}"
