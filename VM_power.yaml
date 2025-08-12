@@ -1,22 +1,38 @@
 ---
-- name: Mmanage Virtual Machine power state
+- name: Toggle VMs based on desired state
   hosts: localhost
+  gather_facts: false
+  vars:
+    desired_vm_state: false  # Set to true to start, false to stop
+
   tasks:
-    - name: Get an existing Virtual Machines
+
+    - name: Get all VirtualMachines in all namespaces
       kubernetes.core.k8s_info:
         api_version: kubevirt.io/v1
         kind: VirtualMachine
-        namespace: "{{ vm_namespace }}"
-      register: VM_machines
-        
-    - name: change virtual machine running to {{ state }}
+      register: vm_facts
+
+    - name: Filter VMs that need toggling
+      set_fact:
+        vms_to_toggle: >-
+          {{
+            vm_facts.resources | selectattr('spec.running', 'defined') |
+            selectattr('spec.running', 'ne', desired_vm_state) |
+            list
+          }}
+
+    - name: Toggle VM state
       kubernetes.core.k8s:
         state: present
         resource_definition:
-          api_version: kubevirt.io/v1
+          apiVersion: kubevirt.io/v1
           kind: VirtualMachine
           metadata:
-            name: "{{ vm_name }}"
-            namespace: "{{ vm_namespace }}"
+            name: "{{ item.metadata.name }}"
+            namespace: "{{ item.metadata.namespace }}"
           spec:
-            running: "{{ vm_state }}"
+            running: "{{ desired_vm_state }}"
+      loop: "{{ vms_to_toggle }}"
+      loop_control:
+        label: "{{ item.metadata.namespace }}/{{ item.metadata.name }}"
