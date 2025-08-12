@@ -1,6 +1,6 @@
 ---
 - name: Manage a Virtual Machine
-  hosts: localhost
+  hosts: all
   tasks:
     - name: Get all VirtualMachines in the namespace
       kubevirt.core.kubevirt_vm_info:
