@@ -13,15 +13,14 @@
       ansible.builtin.debug:
         var: VM_machines.resources
         
-#    - name: change virtual machine running to {{ state }}
-#      kubernetes.core.k8s:
-#        merge_type: "merge"
-#        namespace: "{{ vm_namespace }}"
-#        definition:
-#          apiVersion: kubevirt.io/v1
-#          kind: VirtualMachine
-#          metadata:
-#            namespace: "{{ vm_namespace }}"
-#            #name: "{{ vm_name }}"
-#          spec:
-#            running: "{{ vm_state }}"
+    - name: change virtual machine running to {{ state }}
+      kubernetes.core.k8s:
+        state: patched
+        api_version: kubevirt.io/v1
+        kind: VirtualMachine
+        name: "{{ vm_name }}"
+        namespace: "{{ vm_namespace }}"
+        merge_type: strategic-merge
+        definition:  
+          spec:
+            running: "{{ vm_state }}"
