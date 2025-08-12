@@ -3,7 +3,7 @@
   hosts: localhost
   tasks:
     - name: Get all VirtualMachines in the namespace
-      redhat.openshift_virtualization.kubevirt_vm_info:
+      kubevirt.core.kubevirt_vm_info:
         namespace: "{{ vm_namespace }}"
       register: vm_info
 
