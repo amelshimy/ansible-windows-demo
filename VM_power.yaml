@@ -13,7 +13,7 @@
       kubernetes.core.k8s:
         state: present
         resource_definition:
-          apiVersion: kubevirt.io/v1
+          api_version: kubevirt.io/v1
           kind: VirtualMachine
           metadata:
             name: "{{ vm_name }}"
