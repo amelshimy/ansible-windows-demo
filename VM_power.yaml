@@ -1,16 +1,18 @@
 ---
-- name: Toggle VMs based on desired state
+- name: Toggle VMs in a specific namespace
   hosts: localhost
   gather_facts: false
   vars:
-    desired_vm_state: false  # Set to true to start, false to stop
+    target_namespace: default         # 👈 Replace or override via -e
+    desired_vm_state: false                # true = start, false = stop
 
   tasks:
 
-    - name: Get all VirtualMachines in all namespaces
+    - name: Get VirtualMachines in the target namespace
       kubernetes.core.k8s_info:
         api_version: kubevirt.io/v1
         kind: VirtualMachine
+        namespace: "{{ target_namespace }}"
       register: vm_facts
 
     - name: Filter VMs that need toggling
@@ -22,7 +24,7 @@
             list
           }}
 
-    - name: Toggle VM state
+    - name: Toggle VM state in {{ target_namespace }}
       kubernetes.core.k8s:
         state: present
         resource_definition:
@@ -30,9 +32,9 @@
           kind: VirtualMachine
           metadata:
             name: "{{ item.metadata.name }}"
-            namespace: "{{ item.metadata.namespace }}"
+            namespace: "{{ target_namespace }}"
           spec:
             running: "{{ desired_vm_state }}"
       loop: "{{ vms_to_toggle }}"
       loop_control:
-        label: "{{ item.metadata.namespace }}/{{ item.metadata.name }}"
+        label: "{{ item.metadata.name }}"
