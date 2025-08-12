@@ -15,6 +15,9 @@
         namespace: "{{ target_namespace }}"
       register: vm_facts
 
+    - name: Debug
+      ansible.builtin.debug:
+        var: vm_facts.resources
     - name: Filter VMs that need toggling
       set_fact:
         vms_to_toggle: >-
