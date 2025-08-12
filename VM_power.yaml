@@ -4,7 +4,7 @@
   tasks:
     - name: Get an existing Virtual Machines
       kubernetes.core.k8s_info:
-        api_version: kubevirt.io/v1
+        apiVersion: kubevirt.io/v1
         kind: VirtualMachine
         namespace: "{{ vm_namespace }}"
       register: VM_machines
@@ -17,7 +17,7 @@
         merge_type: "merge"
         namespace: "{{ vm_namespace }}"
         definition:
-          api_version: kubevirt.io/v1
+          apiVersion: kubevirt.io/v1
           kind: VirtualMachine
           metadata:
             namespace: "{{ vm_namespace }}"
