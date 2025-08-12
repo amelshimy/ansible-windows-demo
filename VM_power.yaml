@@ -11,6 +11,6 @@
           kind: VirtualMachine
           metadata:
             namespace: "{{ vm_namespace }}"
-            name: "{{ vm_name }}"
+            #name: "{{ vm_name }}"
           spec:
             running: "{{ vm_state }}"
