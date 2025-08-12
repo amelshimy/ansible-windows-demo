@@ -1,6 +1,6 @@
 ---
 - name: Toggle VMs in a specific namespace
-  hosts: localhost
+  hosts: all
   gather_facts: false
   vars:
     target_namespace: default         # 👈 Replace or override via -e
