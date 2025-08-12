@@ -1,0 +1,15 @@
+---
+- name: Mmanage Virtual Machine power state
+  hosts: localhost
+  tasks:
+    - name: change virtual machine running to {{ state }}
+      kubernetes.core.k8s:
+        merge_type: "merge"
+        namespace: "{{ project }}"
+        definition:
+          apiVersion: kubevirt.io/v1
+          kind: VirtualMachine
+          metadata:
+            namespace: "{{ vm_namespace }}"
+          spec:
+            running: "{{ running }}"
