@@ -8,9 +8,10 @@
         kind: VirtualMachine
         namespace: "{{ vm_namespace }}"
       register: VM_machines
+      
     - name: List all Virtual Machines 
       ansible.builtin.debug:
-        var: VM_machines
+        var: VM_machines.resources
         
 #    - name: change virtual machine running to {{ state }}
 #      kubernetes.core.k8s:
