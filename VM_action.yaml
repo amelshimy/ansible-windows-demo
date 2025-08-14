@@ -1,6 +1,8 @@
 ---
 - name: Manage a Virtual Machine
   hosts: all
+  collections:
+    - kubernetes.core
   tasks:
     - name: Get all VirtualMachines in the namespace
       kubernetes.core.k8s_info:
