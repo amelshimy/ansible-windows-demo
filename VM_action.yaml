@@ -13,6 +13,7 @@
     - name: Install bottle python package
       ansible.builtin.pip:
         name: kubernetes
+        executable: pip3
         
     - name: Get all VirtualMachines in the namespace
       kubernetes.core.k8s_info:
