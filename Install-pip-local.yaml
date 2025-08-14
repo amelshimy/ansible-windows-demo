@@ -1,0 +1,16 @@
+---
+- name: Manage a Virtual Machine
+  hosts: localhost
+  become: true
+  collections:
+    - kubernetes.core
+  tasks:
+    - name: Install python3-pip package
+      ansible.builtin.dnf:
+        name: python3-dnf
+        state: latest
+        
+    - name: Install bottle python package
+      ansible.builtin.pip:
+        name: kubernetes
+        executable: pip3
