@@ -5,6 +5,8 @@
     - name: Get all VirtualMachines in the namespace
       kubernetes.core.k8s_info:
         namespace: "{{ vm_namespace }}"
+        apiVersion: kubevirt.io/v1
+        kind: VirtualMachine
       register: vm_info
 
     - name: Debug the vm_info variable
