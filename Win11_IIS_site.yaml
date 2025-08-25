@@ -16,9 +16,9 @@
     - name: Install IIS on Windows 11
       ansible.windows.win_optional_feature:
         name: IIS-WebServerRole
-        #state: present
-        include_all_subfeatures: true
-        restart: true
+        state: present
+        #include_all_subfeatures: true
+        #restart: true
 
     - name: Create site directory structure
       ansible.windows.win_file:
