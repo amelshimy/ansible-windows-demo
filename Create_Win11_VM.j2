@@ -1,0 +1,52 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: "{{ name }}"
+  namespace: default
+spec:
+  dataVolumeTemplates:
+    - metadata:
+        name: "{{ name }}-volume"
+      spec:
+        sourceRef:
+          kind: DataSource
+          name: "{{ data_source_name }}"
+          namespace: "{{ namespace }}"
+        storage:
+          resources:
+            requests:
+              storage: "{{ storage }}"
+          storageClassName: "{{ storageClassName }}"
+  instancetype:
+    name: u1.large
+  preference:
+    name: windows.11.virtio
+    kind: VirtualMachineClusterPreference
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        network.kubevirt.io/headlessService: headless
+    spec:
+      domain:
+        devices:
+          autoattachPodInterface: false
+          disks:
+            - cdrom:
+                bus: sata
+              name: sysprep
+          interfaces:
+            - masquerade: {}
+              name: default
+      networks:
+        - name: default
+          pod: {}
+      subdomain: headless
+      volumes:
+        - dataVolume:
+            name: "{{ name }}-volume"
+          name: rootdisk
+        - name: sysprep
+          sysprep:
+            configMap:
+              name: "{{ configmap }}"
