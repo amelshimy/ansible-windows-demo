@@ -12,10 +12,10 @@
     iis_test_message: "Hello World!  My test IIS Server"
 
   tasks:
-    - name: Ensure RSAT Server Manager Tools is installed
-      ansible.windows.win_feature:
-        name: RSAT-ServerManager
-        state: present
+    #- name: Ensure RSAT Server Manager Tools is installed
+    #  ansible.windows.win_feature:
+    #    name: RSAT-ServerManager
+    #    state: present
 
     - name: Install IIS
       ansible.windows.win_feature:
