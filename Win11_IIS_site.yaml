@@ -16,7 +16,7 @@
     - name: Install IIS on Windows 11
       ansible.windows.win_optional_feature:
         name: IIS-WebServerRole
-        state: present
+        #state: present
         include_all_subfeatures: true
         restart: true
 
