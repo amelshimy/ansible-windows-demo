@@ -13,7 +13,7 @@
 
   tasks:
     - name: Ensure RSAT: Server Manager Tools is installed
-      win_feature:
+      ansible.windows.win_feature:
         name: RSAT-ServerManager
         state: present
 
