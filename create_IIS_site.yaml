@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: default-windows-11-virtio-copper-mongoose-72
   name: This is a play within a playbook
   vars:
     iis_sites:
